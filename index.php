@@ -192,9 +192,13 @@ class API{
         }
         return '{"code":200,"count":'.$this->scrobble($ids).'}';
     }
-    public function sign(){
+    public function sign($isPhone){
         $url="https://music.163.com/weapi/point/dailyTask";
-        $data=array("type"=>0);
+        if($isPhone==true){
+            $data=array("type"=>0);
+        }else{
+            $data=array("type"=>1);
+        }
         return $this->curl($url,$this->prepare($data),true);
     }
     public function scrobble($songid){
@@ -263,7 +267,10 @@ $api->follow();
 if($_REQUEST["do"]=="login"){
 echo $api->login($_REQUEST["uin"],$_REQUEST["pwd"],$_REQUEST["countrycode"]);}
 elseif($_REQUEST["do"]=="email"){echo $api->loginByEmail($_REQUEST["uin"],$_REQUEST["pwd"]);}
-elseif($_REQUEST["do"]=="sign"){echo $api->sign();}
+elseif($_REQUEST["do"]=="sign"){
+    $api->sign(false);
+    echo $api->sign(true);
+}
 elseif($_REQUEST["do"]=="daka"){echo $api->daka_new();}
 elseif($_REQUEST["do"]=="check"){echo $api->follow();}
 elseif($_REQUEST["do"]=="detail"){echo $api->detail($_REQUEST["uid"]);}
